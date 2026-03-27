@@ -100,6 +100,15 @@ The frontend currently uses internal API routes under `frontend/src/app/api/`, i
 - The app expects `DATABASE_URL` to be configured for data-backed pages and API routes.
 - `frontend/README.md` contains a shorter app-specific setup note.
 
+## WeChat Group
+
+Scan the QR code below to join the WeChat group:
+
+<img src="./wechatgroup.jpg" alt="WeChat group QR code" width="220" />
+
+
+
+
 ## License
 
 No repository-level license file is included yet.

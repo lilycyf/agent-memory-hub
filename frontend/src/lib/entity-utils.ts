@@ -3,14 +3,24 @@ export function entityIdToSlug(entityId: string): string {
 }
 
 export function slugToEntityId(slug: string): string {
-  return decodeURIComponent(slug);
+  try {
+    return decodeURIComponent(slug);
+  } catch {
+    return slug;
+  }
 }
 
 export function comparePathFromIds(entityIds: string[]): string {
-  const slugs = entityIds.slice(0, 3).map(entityIdToSlug);
-  return slugs.length > 0 ? `/compare/${slugs.join("/")}` : "/compare";
+  const params = new URLSearchParams();
+  entityIds
+    .slice(0, 3)
+    .map(slugToEntityId)
+    .filter(Boolean)
+    .forEach((id) => params.append("ids", id));
+  const qs = params.toString();
+  return qs ? `/compare?${qs}` : "/compare";
 }
 
-export function compareSlugsToEntityIds(slugs: string[] | undefined): string[] {
-  return (slugs ?? []).slice(0, 3).map(slugToEntityId);
+export function compareQueryIdsToEntityIds(ids: string[]): string[] {
+  return ids.map(slugToEntityId).filter(Boolean).slice(0, 3);
 }

@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ExternalLink } from "@/components/external-link";
-import { comparePathFromIds, compareSlugsToEntityIds } from "@/lib/entity-utils";
+import { comparePathFromIds, compareQueryIdsToEntityIds } from "@/lib/entity-utils";
 import type { Entity, QaItem } from "@/lib/types";
 
 type ComparePayload = {
@@ -13,8 +13,9 @@ type ComparePayload = {
 
 export function ComparePageClient() {
   const router = useRouter();
-  const params = useParams<{ slugs?: string[] }>();
-  const ids = useMemo(() => compareSlugsToEntityIds(Array.isArray(params.slugs) ? params.slugs : undefined), [params]);
+  const searchParams = useSearchParams();
+  const queryIds = useMemo(() => compareQueryIdsToEntityIds(searchParams.getAll("ids")), [searchParams]);
+  const ids = queryIds;
   const [items, setItems] = useState<{ entity: Entity; qa: QaItem[] }[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [pickerSlot, setPickerSlot] = useState<number | null>(null);
@@ -23,6 +24,7 @@ export function ComparePageClient() {
   const [compareError, setCompareError] = useState("");
   const [isPickerLoading, setIsPickerLoading] = useState(false);
   const [pickerError, setPickerError] = useState("");
+  const hasPickerQuery = searchQuery.trim().length > 0;
   const selectedCount = ids.length;
   const selectedEntityIds = useMemo(() => new Set(ids), [ids]);
 
@@ -377,7 +379,9 @@ export function ComparePageClient() {
                   </button>
                 );
               })}
-              {searchResults.length === 0 ? <div className="compare-picker-empty">No matching memory frameworks available.</div> : null}
+              {!isPickerLoading && !pickerError && hasPickerQuery && searchResults.length === 0 ? (
+                <div className="compare-picker-empty">No matching memory frameworks available.</div>
+              ) : null}
             </div>
           </div>
         </div>

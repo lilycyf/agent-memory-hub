@@ -18,7 +18,7 @@ Minimum required for usable frontend display:
 - `github_url`
 - `github_full_name` (`owner/repo`)
 - `description`
-- `tags` (required array; use only allowed taxonomy values)
+- `tag_flags` (required jsonb map; taxonomy tag -> boolean)
 - `arxiv_match_type` (required): `official` | `lineage` | `related` | `none`
 - `arxiv_confidence` (required numeric 0..1)
 
@@ -99,7 +99,8 @@ Notes:
 - `github_url` is reachable and consistent with `github_full_name`
 - `arxiv_match_type` is set and `arxiv_confidence` in [0,1]
 - If `arxiv_url` exists, `arxiv_match_type` should not be `none`
-- `tags` is non-empty and taxonomy-valid
+- `tag_flags` contains only taxonomy-approved keys
+- at least one taxonomy tag is set to `true`
 
 ### Q&A Validation
 

@@ -173,9 +173,10 @@ export async function listEntityFacets(): Promise<{ tags: string[] }> {
   const pool = requirePool();
   const tagRows = await pool.query<{ value: string }>(
     `
-    select distinct t as value
+    select distinct tf.key as value
     from public.entities,
-    lateral unnest(coalesce(tags, '{}'::text[])) as t
+    lateral jsonb_each_text(coalesce(tag_flags, '{}'::jsonb)) as tf(key, value)
+    where tf.value = 'true'
     order by 1
     `,
   );
@@ -191,7 +192,11 @@ export async function getHomepageSummary(): Promise<HomepageSummary> {
       `
       select
         entity_id, name, github_full_name, github_url, description, docs_url, homepage_url,
-        tags,
+        coalesce((
+          select array_agg(tf.key order by tf.key)
+          from jsonb_each_text(coalesce(tag_flags, '{}'::jsonb)) as tf(key, value)
+          where tf.value = 'true'
+        ), '{}'::text[]) as tags,
         stargazers_count, forks_count, open_issues_count, repo_updated_at, source_snapshot_at,
         primary_language, license,
         arxiv_id, arxiv_url, arxiv_title, arxiv_match_type, arxiv_confidence
@@ -227,7 +232,11 @@ export async function getEntityIndexStats(
     `
     select
       entity_id, name, github_full_name, github_url, description, docs_url, homepage_url,
-      tags,
+      coalesce((
+        select array_agg(tf.key order by tf.key)
+        from jsonb_each_text(coalesce(tag_flags, '{}'::jsonb)) as tf(key, value)
+        where tf.value = 'true'
+      ), '{}'::text[]) as tags,
       stargazers_count, forks_count, open_issues_count, repo_updated_at, source_snapshot_at,
       primary_language, license,
       arxiv_id, arxiv_url, arxiv_title, arxiv_match_type, arxiv_confidence
@@ -236,10 +245,8 @@ export async function getEntityIndexStats(
       ($1 = '' or lower(github_full_name) like $2 or lower(name) like $2
       or exists (
         select 1
-        from unnest(
-          coalesce(tags, '{}'::text[])
-        ) as t(v)
-        where lower(t.v) like $2
+        from jsonb_each_text(coalesce(tag_flags, '{}'::jsonb)) as tf(key, value)
+        where tf.value = 'true' and lower(tf.key) like $2
       ))
     `,
     [query.trim().toLowerCase(), like],
@@ -263,7 +270,11 @@ export async function listEntitiesPaged(params: EntityListParams = {}): Promise<
     `
     select
       entity_id, name, github_full_name, github_url, description, docs_url, homepage_url,
-      tags,
+      coalesce((
+        select array_agg(tf.key order by tf.key)
+        from jsonb_each_text(coalesce(tag_flags, '{}'::jsonb)) as tf(key, value)
+        where tf.value = 'true'
+      ), '{}'::text[]) as tags,
       stargazers_count, forks_count, open_issues_count, repo_updated_at, source_snapshot_at,
       primary_language, license,
       arxiv_id, arxiv_url, arxiv_title, arxiv_match_type, arxiv_confidence
@@ -272,10 +283,8 @@ export async function listEntitiesPaged(params: EntityListParams = {}): Promise<
       ($1 = '' or lower(github_full_name) like $2 or lower(name) like $2
       or exists (
         select 1
-        from unnest(
-          coalesce(tags, '{}'::text[])
-        ) as t(v)
-        where lower(t.v) like $2
+        from jsonb_each_text(coalesce(tag_flags, '{}'::jsonb)) as tf(key, value)
+        where tf.value = 'true' and lower(tf.key) like $2
       ))
     order by stargazers_count desc nulls last, updated_at desc
     limit $3
@@ -295,7 +304,11 @@ export async function getEntity(entityId: string): Promise<Entity | null> {
     `
     select
       entity_id, name, github_full_name, github_url, description, docs_url, homepage_url,
-      tags,
+      coalesce((
+        select array_agg(tf.key order by tf.key)
+        from jsonb_each_text(coalesce(tag_flags, '{}'::jsonb)) as tf(key, value)
+        where tf.value = 'true'
+      ), '{}'::text[]) as tags,
       stargazers_count, forks_count, open_issues_count, repo_updated_at, source_snapshot_at,
       primary_language, license,
       arxiv_id, arxiv_url, arxiv_title, arxiv_match_type, arxiv_confidence,

@@ -10,7 +10,7 @@ This document reflects the live database schema after removing deprecated `track
   - `public.qa_items`
 - Notes:
   - `nullable = NO` means DB-level required field.
-  - `ARRAY` fields are Postgres text arrays.
+- `jsonb` fields are returned as JSON objects.
   - `numeric` is read as number/decimal in application code.
 
 ## `public.entities`
@@ -25,7 +25,7 @@ This document reflects the live database schema after removing deprecated `track
 | `github_full_name` | text | YES | GitHub full repo name (`owner/repo`). |
 | `github_default_branch` | text | YES | Default branch name on GitHub. |
 | `arxiv_url` | text | YES | Linked arXiv URL. |
-| `tags` | ARRAY | NO | Tag list for indexing/filtering. |
+| `tag_flags` | jsonb | NO | Tag boolean map keyed by taxonomy tag (`true` = selected, `false` = unselected). |
 | `created_at` | timestamp with time zone | NO | Record creation timestamp in DB. |
 | `updated_at` | timestamp with time zone | NO | Record update timestamp in DB. |
 | `description` | text | YES | Project description text. |
@@ -56,6 +56,7 @@ The frontend API does **not** return every DB field directly. In `src/lib/reposi
   - `entity_id -> entityId`
   - `github_full_name -> githubFullName`
   - `github_url -> githubUrl`
+  - `tag_flags -> tags` (frontend reconstructs `tags: string[]` from `true` keys)
   - `primary_language -> language`
   - `repo_updated_at -> repoUpdatedAt`
 - Nested under `stats`:

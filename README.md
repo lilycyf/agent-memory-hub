@@ -104,7 +104,7 @@ The frontend currently uses internal API routes under `frontend/src/app/api/`, i
 
 Scan the QR code below to join the WeChat group:
 
-<img src="./wechatgroup.jpg" alt="WeChat group QR code" width="220" />
+<img src="./image.png" alt="WeChat group QR code" width="220" />
 
 
 

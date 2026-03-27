@@ -29,7 +29,7 @@ export default async function HomePage() {
     <div className="page-shell or-homepage">
       <section className="or-home-hero">
         <div className="or-home-hero-main">
-          <p className="or-hero-kicker">Memory Router</p>
+          <p className="or-hero-kicker">Agent Memory Hub</p>
           <h1>Search the memory ecosystem like a live model directory.</h1>
           <p className="or-hero-subtitle or-home-subtitle">
             Browse repository-backed memory frameworks and scan the strongest signals quickly.

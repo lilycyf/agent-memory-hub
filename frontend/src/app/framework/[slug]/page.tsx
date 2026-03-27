@@ -19,9 +19,9 @@ export async function generateMetadata({ params }: EntityPageProps): Promise<Met
   const entityId = decodeURIComponent(slug);
   const entity = await getEntity(entityId);
   if (!entity) {
-    return { title: "Not found · Memory Router" };
+    return { title: "Not found · Agent Memory Hub" };
   }
-  const title = `${entity.name} · Memory Router`;
+  const title = `${entity.name} · Agent Memory Hub`;
   return {
     title,
     description: entity.description,

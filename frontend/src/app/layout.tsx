@@ -23,7 +23,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
-  title: "Memory Router",
+  title: "Agent Memory Hub",
   description: "OpenRouter-style entity hub for exploring and comparing memory frameworks",
 };
 

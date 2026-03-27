@@ -1,4 +1,4 @@
-Memory Router frontend built with [Next.js](https://nextjs.org).
+Agent Memory Hub frontend built with [Next.js](https://nextjs.org).
 
 ## Getting Started
 

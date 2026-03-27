@@ -16,8 +16,8 @@ export function AppNav() {
     <header className="site-header">
       <div className="site-header-inner">
         <Link href="/" className="site-brand">
-          <span className="site-brand-mark" aria-hidden="true">MR</span>
-          <span className="site-brand-text">Memory Router</span>
+          <span className="site-brand-mark" aria-hidden="true">AMH</span>
+          <span className="site-brand-text">Agent Memory Hub</span>
         </Link>
         <SiteSearchCommand />
         <div className="site-nav-wrap">

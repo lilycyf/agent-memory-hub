@@ -56,9 +56,9 @@ export function AppFooter() {
     <footer className="site-footer">
       <div className="site-footer-inner">
         <div className="site-footer-brand">
-          <span className="footer-mark">MR</span>
+          <span className="footer-mark">AMH</span>
           <div>
-            <strong>Memory Router</strong>
+            <strong>Agent Memory Hub</strong>
             <p>Memory framework discovery and compare workflows.</p>
           </div>
         </div>

@@ -7,6 +7,7 @@ import { EntityIndexList } from "@/components/entity-index-row";
 import { EntityTable } from "@/components/entity-table";
 import { groupSelectedTagsByCategory, normalizeSelectedTags, TAG_CATEGORY_DEFS } from "@/lib/tag-taxonomy";
 import type { Entity, EntityIndexStats } from "@/lib/types";
+import type { TagId } from "@/lib/tag-taxonomy";
 
 const PAGE_SIZE = 40;
 
@@ -153,7 +154,7 @@ export function ModelsPage({
     });
   }
 
-  function toggleTag(next: string) {
+  function toggleTag(next: TagId) {
     replaceQuery((params) => {
       const current = new Set(selectedTags);
       if (current.has(next)) current.delete(next);
